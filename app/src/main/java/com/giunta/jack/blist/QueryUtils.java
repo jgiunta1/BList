@@ -1,6 +1,11 @@
 package com.giunta.jack.blist;
 
+import android.text.TextUtils;
 import android.util.Log;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -10,6 +15,8 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.charset.Charset;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Jack on 6/19/2017.
@@ -94,4 +101,68 @@ public final class QueryUtils {
         return output.toString();
     }
 
+    /**
+     * Return a list of {@link Book} objects that has been built up from
+     * parsing the given JSON response.
+     */
+    private static List<Book> parseJson(String bookJSON){
+        // If the JSON string is empty or null, then return early.
+        if(TextUtils.isEmpty(bookJSON)){
+            return null;
+        }
+        // Create an empty ArrayList that we can start adding Books to
+        List<Book> books = new ArrayList<>();
+
+        // Try to parse the JSON response string. If there's a problem with the way the JSON
+        // is formatted, a JSONException exception object will be thrown.
+        // Catch the exception so the app doesn't crash, and print the error message to the logs.
+        try {
+
+            // Create a JSONObject from the JSON response string
+            JSONObject booksJOBJ = new JSONObject(bookJSON);
+
+            // Extract the JSONArray associated with the key called "items",
+            // which represents a list of items (or books).
+            JSONArray booksJsonArray = booksJOBJ.getJSONArray("items");
+
+            // For each book in the bookArray, create an {@link Book} object
+            for(int i = 0; i < booksJsonArray.length();i++){
+
+                // Get a single earthquake at position i within the list of earthquakes
+                JSONObject currentBook = booksJsonArray.getJSONObject(i);
+
+                // For a given book, extract the JSONObject associated with the
+                // key called "volumeInfo", which represents a list of all properties
+                // for that book.
+                JSONObject volumeInfo = currentBook.getJSONObject("volumeInfo");
+
+                // Extract the value for the key called "title"
+                String title = volumeInfo.getString("title");
+
+                // Extract the value for the key called "authors"
+                JSONArray authorsJsonArray = volumeInfo.getJSONArray("authors");
+                List<String> authorsList = new ArrayList<>();
+                for(int j=0; j < authorsJsonArray.length(); j++){
+                    authorsList.add(authorsJsonArray.get(j).toString());
+                }
+                // Extract the value for the key called "publishedDate"
+                String date = volumeInfo.getString("publishedDate");
+
+                // Create a new {@link Book} object
+                Book book = new Book(title,date,authorsList);
+
+                // Add the new {@link Earthquake} to the list of earthquakes.
+                books.add(book);
+            }
+
+            // If an error is thrown when executing any of the above statements in the "try" block,
+            // catch the exception here, so the app doesn't crash. Print a log message
+            // with the message from the exception.
+        } catch (JSONException e){
+            Log.e(LOG_TAG, "Could not parse JSON", e);
+        }
+
+        // Return the list of earthquakes
+        return books;
+    }
 }
