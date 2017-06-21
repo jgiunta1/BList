@@ -165,4 +165,22 @@ public final class QueryUtils {
         // Return the list of earthquakes
         return books;
     }
+
+    /**
+     * Query the GoogleBooks dataset and return a list of {@link Book} objects.
+     */
+    public static List<Book> fetchBookData(String requestUrl){
+        URL url = createUrl(requestUrl);
+        String jsonResponse = null;
+        try{
+            jsonResponse = makeHttpRequest(url);
+        }catch (IOException e){
+            Log.e(LOG_TAG, "Problem making HTTP request", e);
+        }
+
+        List<Book> books = parseJson(jsonResponse);
+
+        return books;
+
+    }
 }
