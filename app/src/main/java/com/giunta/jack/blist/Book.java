@@ -1,5 +1,6 @@
 package com.giunta.jack.blist;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -10,10 +11,10 @@ public class Book {
 
     private String title;
     private double averageRating;
-    private String date;
+    private Date date;
     private List<String> authors;
 
-    public Book(String title,double averageRating, String date, List<String> authors){
+    public Book(String title,double averageRating, Date date, List<String> authors){
         this.title = title;
         this.averageRating = averageRating;
         this.date = date;
@@ -36,11 +37,11 @@ public class Book {
         this.title = title;
     }
 
-    public String getDate() {
+    public Date getDate() {
         return date;
     }
 
-    public void setDate(String date) {
+    public void setDate(Date date) {
         this.date = date;
     }
 

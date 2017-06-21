@@ -15,7 +15,10 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.charset.Charset;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -146,7 +149,8 @@ public final class QueryUtils {
                     authorsList.add(authorsJsonArray.get(j).toString());
                 }
                 // Extract the value for the key called "publishedDate"
-                String date = volumeInfo.getString("publishedDate");
+                String dateString = volumeInfo.getString("publishedDate");
+                Date date = convertDate(dateString);
 
                 // Extract the value for the key called "averageRating"
                 double averageRating = currentBook.getDouble("averageRating");
@@ -167,6 +171,28 @@ public final class QueryUtils {
 
         // Return the list of earthquakes
         return books;
+    }
+
+    private static Date convertDate(String dateString){
+
+        if(TextUtils.isEmpty(dateString))
+            return null;
+
+        SimpleDateFormat formatter;
+        Date date = null;
+
+        if(dateString.contains("-"))
+            formatter = new SimpleDateFormat("yyyy-MM-dd");
+        else
+            formatter = new SimpleDateFormat("yyyy");
+
+        try {
+            date = formatter.parse(dateString);
+        }catch (ParseException e){
+            Log.e(LOG_TAG, "Couldn't Format Date", e);
+        }
+
+        return date;
     }
 
     /**

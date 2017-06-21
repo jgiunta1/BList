@@ -5,7 +5,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.TextView;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 /**
@@ -32,8 +34,24 @@ public class BookAdapter extends ArrayAdapter<Book> {
         // Get the {@link Book} object located at this position in the list
         Book currentBook = getItem(position);
 
-        // Find the TextView in the list_item.xml layout with the ID book_rating
+        // book_rating
+        TextView rating = (TextView) listItemView.findViewById(R.id.book_rating);
+        double ratingDouble = currentBook.getAverageRating();
+        String formattedRating = formatRating(ratingDouble);
+        rating.setText(formattedRating);
+
+        // book_title
+        TextView title = (TextView) listItemView.findViewById(R.id.book_title);
+        title.setText(currentBook.getTitle());
+
+        // book_date
+        TextView date = (TextView) listItemView.findViewById(R.id.book_date);
 
         return listItemView;
+    }
+
+    private String formatRating(double rating){
+        DecimalFormat rateFormat = new DecimalFormat("0.0");
+        return rateFormat.format(rating);
     }
 }
