@@ -148,8 +148,11 @@ public final class QueryUtils {
                 // Extract the value for the key called "publishedDate"
                 String date = volumeInfo.getString("publishedDate");
 
+                // Extract the value for the key called "averageRating"
+                double averageRating = currentBook.getDouble("averageRating");
+
                 // Create a new {@link Book} object
-                Book book = new Book(title,date,authorsList);
+                Book book = new Book(title,averageRating, date,authorsList);
 
                 // Add the new {@link Earthquake} to the list of earthquakes.
                 books.add(book);
