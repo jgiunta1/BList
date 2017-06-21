@@ -8,7 +8,9 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 /**
  * Created by Jack on 6/20/2017.
@@ -46,6 +48,12 @@ public class BookAdapter extends ArrayAdapter<Book> {
 
         // book_date
         TextView date = (TextView) listItemView.findViewById(R.id.book_date);
+        String formattedDate = formatDate(currentBook.getDate());
+        date.setText(formattedDate);
+
+        // book_author
+        TextView author = (TextView) listItemView.findViewById(R.id.book_author);
+        // TODO load formatted author to TextView
 
         return listItemView;
     }
@@ -53,5 +61,16 @@ public class BookAdapter extends ArrayAdapter<Book> {
     private String formatRating(double rating){
         DecimalFormat rateFormat = new DecimalFormat("0.0");
         return rateFormat.format(rating);
+    }
+
+    private String formatDate(Date date){
+        SimpleDateFormat dateFormat = new SimpleDateFormat("LLL dd, yyyy");
+        return dateFormat.format(date);
+    }
+
+    private String formatAuthor(ArrayList<String> authors){
+        String author = null;
+        // TODO Implement formatAuthor method
+        return author;
     }
 }
