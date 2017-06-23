@@ -3,21 +3,25 @@
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
-    <!-- Color for an earthquake with magnitude 0 and 2 -->
+
+    <!-- Circle color for rating < 2 -->
     <color name="rating1">#D93218</color>
 
-    <!-- Magnitude circle color for an earthquake with magnitude between 2 and 3 -->
+    <!-- Circle color for rating < 3 -->
     <color name="rating2">#FC6644</color>
 
-    <!-- Magnitude circle color for an earthquake with magnitude between 3 and 4 -->
+    <!-- Circle color for rating < 4 -->
     <color name="rating3">#d6d923</color>
 
-    <!-- Magnitude circle color for an earthquake with magnitude between 4 and 5 -->
+    <!-- Circle color for rating 4 - 5 -->
     <color name="rating4">#12a33b</color>
 
-    <!-- Text color for the details of the earthquake in the list item -->
+    <!-- Circle color for no rating -->
+    <color name="ratingNA">#B4BAC0</color>
+
+    <!-- Text color for the details of the book in the list item -->
     <color name="textColorBookDetails">#B4BAC0</color>
 
-    <!-- Text color for the primary location of the earthquake in the list item -->
+    <!-- Text color for the primary location of the book in the list item -->
     <color name="textColorBookTitle">#2B3D4D</color>
 </resources>
