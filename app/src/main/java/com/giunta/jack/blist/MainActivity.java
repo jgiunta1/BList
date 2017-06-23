@@ -1,12 +1,16 @@
 package com.giunta.jack.blist;
 
 import android.app.LoaderManager.LoaderCallbacks;
+import android.content.Context;
 import android.content.Loader;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -29,18 +33,29 @@ public class MainActivity extends AppCompatActivity implements LoaderCallbacks<L
         setContentView(R.layout.activity_main);
 
         // Find reference to EmptyTextView
-        emptyView = (TextView)findViewById(R.id.empty_state_TextView);
+        emptyView = (TextView) findViewById(R.id.empty_state_TextView);
 
-        // Find reference to {@link ListView} in the layout
-        ListView bookListView = (ListView)findViewById(R.id.bookList);
-        bookListView.setEmptyView(emptyView);
+        // Check for network connectivity
+        ConnectivityManager cm = (ConnectivityManager) getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+        boolean isConnected = activeNetwork != null && activeNetwork.isConnectedOrConnecting();
 
-        // Create a new adapter with an empty list of Books
-        bookAdapter = new BookAdapter(this, new ArrayList<Book>());
-        bookListView.setAdapter(bookAdapter);
+        if(isConnected) {
+            // Find reference to {@link ListView} in the layout
+            ListView bookListView = (ListView) findViewById(R.id.bookList);
+            bookListView.setEmptyView(emptyView);
 
-        // Find EditText view
-        keywordView = (EditText) findViewById(R.id.keyword);
+            // Create a new adapter with an empty list of Books
+            bookAdapter = new BookAdapter(this, new ArrayList<Book>());
+            bookListView.setAdapter(bookAdapter);
+
+            // Find EditText view
+            keywordView = (EditText) findViewById(R.id.keyword);
+        } else {
+            Button search = (Button) findViewById(R.id.button_search);
+            search.setClickable(false);
+            emptyView.setText("No Internet Connection");
+        }
 
     }
 
