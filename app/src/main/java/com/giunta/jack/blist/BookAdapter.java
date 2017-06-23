@@ -53,7 +53,8 @@ public class BookAdapter extends ArrayAdapter<Book> {
 
         // book_author
         TextView author = (TextView) listItemView.findViewById(R.id.book_author);
-        // TODO load formatted author to TextView
+        String authors = formatAuthor((ArrayList<String>) currentBook.getAuthors());
+        author.setText(authors);
 
         return listItemView;
     }
@@ -69,8 +70,17 @@ public class BookAdapter extends ArrayAdapter<Book> {
     }
 
     private String formatAuthor(ArrayList<String> authors){
-        String author = null;
-        // TODO Implement formatAuthor method
-        return author;
+
+        if(authors == null || authors.isEmpty()){
+            return "Author Not Available";
+        }
+        StringBuilder authorsBuilder = new StringBuilder();
+        for(int i = 0; i < authors.size() - 1; i++){
+            authorsBuilder.append(authors.get(i) + ", ");
+        }
+        authorsBuilder.append(authors.get(authors.size() - 1));
+
+
+        return authorsBuilder.toString();
     }
 }
