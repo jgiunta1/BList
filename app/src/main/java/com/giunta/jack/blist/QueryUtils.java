@@ -28,7 +28,8 @@ import java.util.List;
 
 public final class QueryUtils {
     public static final String LOG_TAG = "QueryUtils";
-
+    private static final String baseUrl = "https://www.googleapis.com/books/v1/volumes?q=";
+    private static final String maxResults = "&maxResults=10";
     /**
      * Create a private constructor because no one should ever create a {@link QueryUtils} object.
      * This class is only meant to hold static variables and methods, which can be accessed
@@ -198,8 +199,9 @@ public final class QueryUtils {
     /**
      * Query the GoogleBooks dataset and return a list of {@link Book} objects.
      */
-    public static List<Book> fetchBookData(String requestUrl){
-        URL url = createUrl(requestUrl);
+    public static List<Book> fetchBookData(String requestKeyword){
+
+        URL url = createUrl(baseUrl + requestKeyword + maxResults);
         String jsonResponse = null;
         try{
             jsonResponse = makeHttpRequest(url);
