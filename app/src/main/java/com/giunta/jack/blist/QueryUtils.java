@@ -154,8 +154,10 @@ public final class QueryUtils {
                 Date date = convertDate(dateString);
 
                 // Extract the value for the key called "averageRating"
-                double averageRating = currentBook.getDouble("averageRating");
-
+                //String averageRatingString = volumeInfo.getString("averageRating");
+                Double averageRating = null;
+                if(volumeInfo.has("averageRating"))
+                    averageRating = volumeInfo.getDouble("averageRating");
                 // Create a new {@link Book} object
                 Book book = new Book(title,averageRating, date,authorsList);
 

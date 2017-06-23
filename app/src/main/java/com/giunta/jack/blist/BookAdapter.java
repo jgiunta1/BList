@@ -38,7 +38,7 @@ public class BookAdapter extends ArrayAdapter<Book> {
 
         // book_rating
         TextView rating = (TextView) listItemView.findViewById(R.id.book_rating);
-        double ratingDouble = currentBook.getAverageRating();
+        Double ratingDouble = currentBook.getAverageRating();
         String formattedRating = formatRating(ratingDouble);
         rating.setText(formattedRating);
 
@@ -59,12 +59,17 @@ public class BookAdapter extends ArrayAdapter<Book> {
         return listItemView;
     }
 
-    private String formatRating(double rating){
+    private String formatRating(Double rating){
+        if(rating == null){
+            return "NA";
+        }
         DecimalFormat rateFormat = new DecimalFormat("0.0");
         return rateFormat.format(rating);
     }
 
     private String formatDate(Date date){
+        if(date == null)
+            return "NA";
         SimpleDateFormat dateFormat = new SimpleDateFormat("LLL dd, yyyy");
         return dateFormat.format(date);
     }

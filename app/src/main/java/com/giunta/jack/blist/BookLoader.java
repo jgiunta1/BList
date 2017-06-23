@@ -35,7 +35,7 @@ public class BookLoader extends AsyncTaskLoader<List<Book>> {
 
         List<Book> result = QueryUtils.fetchBookData(keyword);
         Log.i(LOG_TAG, "loadInBackground() called...");
-        return null;
+        return result;
     }
 
 
