@@ -10,23 +10,19 @@ import java.util.List;
 public class Book {
 
     private String title;
-    private double averageRating;
+    private Double averageRating;
     private Date date;
     private List<String> authors;
 
-    public Book(String title,double averageRating, Date date, List<String> authors){
+    public Book(String title, Double averageRating, Date date, List<String> authors){
         this.title = title;
         this.averageRating = averageRating;
         this.date = date;
         this.authors = authors;
     }
 
-    public double getAverageRating() {
+    public Double getAverageRating() {
         return averageRating;
-    }
-
-    public void setAverageRating(double averageRating) {
-        this.averageRating = averageRating;
     }
 
     public String getTitle() {
@@ -41,17 +37,8 @@ public class Book {
         return date;
     }
 
-    public void setDate(Date date) {
-        this.date = date;
-    }
-
     public List<String> getAuthors() {
         return authors;
     }
-
-    public void setAuthors(List<String> authors) {
-        this.authors = authors;
-    }
-
 
 }

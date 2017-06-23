@@ -1,6 +1,8 @@
 package com.giunta.jack.blist;
 
 import android.app.Activity;
+import android.graphics.drawable.GradientDrawable;
+import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -37,10 +39,15 @@ public class BookAdapter extends ArrayAdapter<Book> {
         Book currentBook = getItem(position);
 
         // book_rating
+            //Text
         TextView rating = (TextView) listItemView.findViewById(R.id.book_rating);
-        double ratingDouble = currentBook.getAverageRating();
+        Double ratingDouble = currentBook.getAverageRating();
         String formattedRating = formatRating(ratingDouble);
         rating.setText(formattedRating);
+            // Cirlce
+        GradientDrawable rateCircle = (GradientDrawable) rating.getBackground();
+        int rateColor = getRatingColor(currentBook.getAverageRating());
+        rateCircle.setColor(rateColor);
 
         // book_title
         TextView title = (TextView) listItemView.findViewById(R.id.book_title);
@@ -59,12 +66,17 @@ public class BookAdapter extends ArrayAdapter<Book> {
         return listItemView;
     }
 
-    private String formatRating(double rating){
+    private String formatRating(Double rating){
+        if(rating == null){
+            return "NA";
+        }
         DecimalFormat rateFormat = new DecimalFormat("0.0");
         return rateFormat.format(rating);
     }
 
     private String formatDate(Date date){
+        if(date == null)
+            return "NA";
         SimpleDateFormat dateFormat = new SimpleDateFormat("LLL dd, yyyy");
         return dateFormat.format(date);
     }
@@ -82,5 +94,30 @@ public class BookAdapter extends ArrayAdapter<Book> {
 
 
         return authorsBuilder.toString();
+    }
+
+    private int getRatingColor(Double rating){
+
+
+        if(rating == null)
+            return ContextCompat.getColor(getContext(), R.color.ratingNA);
+
+        int rateInt = rating.intValue();
+        int rateColor;
+        switch (rateInt){
+            case 0:
+            case 1: rateColor = ContextCompat.getColor(getContext(), R.color.rating1);
+                break;
+            case 2: rateColor = ContextCompat.getColor(getContext(), R.color.rating2);
+                break;
+            case 3: rateColor = ContextCompat.getColor(getContext(), R.color.rating3);
+                break;
+            case 4:
+            case 5: rateColor = ContextCompat.getColor(getContext(), R.color.rating4);
+                break;
+            default: rateColor = ContextCompat.getColor(getContext(), R.color.ratingNA);
+        }
+
+        return rateColor;
     }
 }
