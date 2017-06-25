@@ -13,6 +13,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -26,21 +27,23 @@ public class MainActivity extends AppCompatActivity implements LoaderCallbacks<L
     private BookAdapter bookAdapter;
     private static String keyword;
     private TextView emptyView;
+    private ProgressBar progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // Find reference to EmptyTextView
+        // Find reference to EmptyTextView and ProgressBar
         emptyView = (TextView) findViewById(R.id.empty_state_TextView);
+        progressBar = (ProgressBar) findViewById(R.id.progress_bar);
 
         // Check for network connectivity
         ConnectivityManager cm = (ConnectivityManager) getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
         boolean isConnected = activeNetwork != null && activeNetwork.isConnectedOrConnecting();
 
-        if(isConnected) {
+        if (isConnected) {
             // Find reference to {@link ListView} in the layout
             ListView bookListView = (ListView) findViewById(R.id.bookList);
             bookListView.setEmptyView(emptyView);
@@ -59,50 +62,34 @@ public class MainActivity extends AppCompatActivity implements LoaderCallbacks<L
 
     }
 
-    public void searchBooks(View v){
+    public void searchBooks(View v) {
         keyword = keywordView.getText().toString();
 
-        if(TextUtils.isEmpty(keyword)){
+        if (TextUtils.isEmpty(keyword)) {
             Toast.makeText(MainActivity.this, "INVALID KEYWORD", Toast.LENGTH_LONG).show();
             return;
         }
 
-        // TODO Show loading bar
-
-
         getLoaderManager().initLoader(BOOK_LOADER_ID, null, this);
 
-
-        // Temporarily Load Sample Data into ListView
-/*        bookAdapter.clear();
-        List<String> authors = new ArrayList<>();
-        authors.add("Author1");
-        authors.add("Author2");
-        authors.add("Author3");
-        Book b1 = new Book("Title1", 4, new Date(), authors);
-        Book b2 = new Book("Title2", 3, new Date(), authors);
-        Book b3 = new Book("Title3", 1, new Date(), authors);
-
-        List<Book> data = new ArrayList<>();
-        data.add(b1);
-        data.add(b2);
-        data.add(b3);
-
-        bookAdapter.addAll(data);*/
     }
 
     @Override
     public Loader<List<Book>> onCreateLoader(int i, Bundle bundle) {
+        // Show Loading Bar
+        progressBar.setVisibility(View.VISIBLE);
         return new BookLoader(this, keyword);
     }
 
     @Override
     public void onLoadFinished(Loader<List<Book>> loader, List<Book> books) {
+
+        progressBar.setVisibility(View.GONE);
         emptyView.setText("No Results");
 
         bookAdapter.clear();
 
-        if(books != null && !books.isEmpty()){
+        if (books != null && !books.isEmpty()) {
             bookAdapter.addAll(books);
         } else {
             Log.e(LOG_TAG, "Error Populating List");
